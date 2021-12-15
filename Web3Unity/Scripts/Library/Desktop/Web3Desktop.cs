@@ -13,7 +13,7 @@ public class Web3Desktop
     private static string response = "";
     private static ClientWebSocket ws;
 
-    async public static Task<string> SendTransaction(string _network, string _to, string _value, string _gasLimit = "", string _gasPrice = "", string _data = "")
+    async public static Task<string> SendTransaction(string _network, string _to, string _value, string _data = "", string _gasLimit = "", string _gasPrice = "")
     {
         ws = new ClientWebSocket();
         await ws.ConnectAsync(new Uri(wsUri), CancellationToken.None);

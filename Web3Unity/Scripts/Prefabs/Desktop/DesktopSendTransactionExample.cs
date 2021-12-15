@@ -21,12 +21,14 @@ public class DesktopSendTransactionExample : MonoBehaviour
         string to = "0xdD4c825203f97984e7867F11eeCc813A036089D1";
         // amount in wei to send
         string value = "1230000000000000";
+        // data OPTIONAL
+        string data = "";
         // gas limit OPTIONAL
         string gasLimit = "";
         // gas price OPTIONAL
         string gasPrice = "";
 
-        string response = await Web3Desktop.SendTransaction(network, to, value, gasLimit, gasPrice);
+        string response = await Web3Desktop.SendTransaction(network, to, value, data, gasLimit, gasPrice);
         // either "0xSignature" or "error"
         Debug.Log(response);
         btn.text = response;
