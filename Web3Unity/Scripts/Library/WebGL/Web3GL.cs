@@ -5,7 +5,6 @@ using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using UnityEngine;
 
-#if UNITY_WEBGL
 public class Web3GL
 {
     [DllImport("__Internal")]
@@ -52,6 +51,7 @@ public class Web3GL
 
     async public static Task<string> CallContract(string _method, string _abi, string _contract, string _args, float _waitSeconds = 0.1f)
     {
+#if UNITY_WEBGL
         ResetCallContractResponse();
         CallContractJs(_method, _abi, _contract, _args);
         string response = CallContractResponse();
@@ -70,11 +70,15 @@ public class Web3GL
         {
             return response;
         }
+#else
+        return null;
+#endif
     }
 
     // this function will create a metamask tx for user to confirm.
     async public static Task<string> SendContract(string _method, string _abi, string _contract, string _args, string _value, string _gasLimit = "", string _gasPrice = "")
     {
+#if UNITY_WEBGL
         // Set response to empty
         SetContractResponse("");
         SendContractJs(_method, _abi, _contract, _args, _value, _gasLimit, _gasPrice);
@@ -86,18 +90,22 @@ public class Web3GL
         }
         SetContractResponse("");
         // check if user submmited or user rejected
-        if (response.Length == 66) 
+        if (response.Length == 66)
         {
             return response;
-        } 
-        else 
+        }
+        else
         {
             throw new Exception(response);
         }
+#else
+        return null;
+#endif
     }
 
     async public static Task<string> SendTransaction(string _to, string _value, string _gasLimit = "", string _gasPrice = "")
     {
+#if UNITY_WEBGL
         // Set response to empty
         SetTransactionResponse("");
         SendTransactionJs(_to, _value, _gasLimit, _gasPrice);
@@ -109,18 +117,22 @@ public class Web3GL
         }
         SetTransactionResponse("");
         // check if user submmited or user rejected
-        if (response.Length == 66) 
+        if (response.Length == 66)
         {
             return response;
-        } 
-        else 
+        }
+        else
         {
             throw new Exception(response);
         }
+#else
+        return null;
+#endif
     }
 
     async public static Task<string> Sign(string _message)
     {
+#if UNITY_WEBGL
         SignMessage(_message);
         string response = SignMessageResponse();
         while (response == "")
@@ -134,11 +146,14 @@ public class Web3GL
         if (response.Length == 132)
         {
             return response;
-        } 
-        else 
+        }
+        else
         {
             throw new Exception(response);
         }
+#else
+        return null;
+#endif
     }
 
     public static int Network()
@@ -147,4 +162,3 @@ public class Web3GL
     }
 
 }
-#endif
